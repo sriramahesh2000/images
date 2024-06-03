@@ -5,6 +5,7 @@ from langchain_experimental.data_anonymizer import PresidioReversibleAnonymizer
 salary_money_pattern = Pattern(
     name="salary_money_pattern",
     regex=r"(?<!\w)(₹?\$?€?USD?INR?usd?inr?\s?)?(\d{1,3}(,\d{3})*|\d+)(\.\d{2})?(?!\w)",
+regex=r"(?<!\w)(INR|USD|₹|\$)?\s?(\d{1,3}(,\d{3})*|\d+)(\.\d{2})?\s?(INR|USD|₹|rupees|dollars)?(?!\w)|(?<!\w)(salary\sis\s|bonus\s(of\s)?)\s?(\d{1,3}(,\d{3})*|\d+)(\.\d{2})?(?!\w)"
     score=1,
 )
 
