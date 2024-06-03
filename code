@@ -1,0 +1,32 @@
+from presidio_analyzer import Pattern, PatternRecognizer
+from langchain_experimental.data_anonymizer import PresidioReversibleAnonymizer
+
+# Define the regex pattern for salary/money information
+salary_money_pattern = Pattern(
+    name="salary_money_pattern",
+    regex=r"(?<!\w)(₹?\$?€?USD?INR?usd?inr?\s?)?(\d{1,3}(,\d{3})*|\d+)(\.\d{2})?(?!\w)",
+    score=1,
+)
+
+# Create the recognizer for salary/money information
+salary_money_recognizer = PatternRecognizer(
+    supported_entity="SALARY_MONEY", patterns=[salary_money_pattern]
+)
+
+# Create an instance of the anonymizer
+anonymizer = PresidioReversibleAnonymizer()
+
+# Add the recognizers to the anonymizer
+anonymizer.add_recognizer(salary_money_recognizer)
+
+# Test the anonymization with various salary formats
+test_text = (
+    "My salary is ₹50000 and I received a bonus of $1200. "
+    "The project budget is €850 and my monthly salary is 2000. "
+    "Another salary example is USD 3,500.50,  and usd 100 and INR 14 and inr 15655 ₹1,00,000.00, and 1000 "
+)
+
+anonymized_text = anonymizer.anonymize(test_text)
+# print(anonymized_text)
+print(anonymized_text)
+print(anonymizer.deanonymize(anonymized_text))
